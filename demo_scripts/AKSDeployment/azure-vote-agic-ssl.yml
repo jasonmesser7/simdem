@@ -97,10 +97,10 @@ metadata:
 spec:
  tls:
  - hosts:
-   - innovationeginequickstart.eastus.cloudapp.azure.com
+   - $FQDN
    secretName: azure-vote-agic-secret
  rules:
-  - host: innovationeginequickstart.eastus.cloudapp.azure.com
+  - host: $FQDN
     http:
       paths:
       - path: /
