@@ -5,13 +5,13 @@ in which the command was given. Note that SimDem provides the
 environment variable `SIMDEM_EXEC_DIR` which provides access to this
 folder in SimDem scripts should it be necessary.
 
-```
+```bash
 cat $SIMDEM_EXEC_DIR/./env.json
 ```
 
 Results:
 
-```
+```json
 {
     "TEST": "Hello from the current working directory (where the simdem command was executed)"
 }
@@ -21,13 +21,13 @@ We should also be able to retrieve locallay defined environment
 variables from the directory in which the command was given:
 
 
-```
+```bash
 cat env.local.json
 ```
 
 Results:
 
-```
+```json
 {
     "TEST": "A local hello from the current working directory (where the simdem command was executed)"
 }
@@ -36,29 +36,40 @@ Results:
 There should also be environment variables in the the directory in
 which the current script resides.
 
-```
+```bash
 cat env.json
 ```
 
 Results:
 
-```
+```json
 {
     "TEST": "Hello from the test script",
-    "DIR_IN_HOME": "~/should/be/expanded"
+    "DIR_IN_HOME": "~/should/be/expanded",
+    "RESOURCE_GROUP_NAME": "testResourceGroup",
+    "RESOURCE_LOCATION": "eastus",
+    "AKS_CLUSTER_NAME": "myAKSCluster",
+    "PUBLIC_IP_NAME": "myPublicIp",
+    "VNET_NAME": "myVnet",
+    "SUBNET_NAME": "mySubnet",
+    "APPLICATION_GATEWAY_NAME": "myApplicationGateway",
+    "APPGW_TO_AKS_PEERING_NAME": "AppGWtoAKSVnetPeering",
+    "AKS_TO_APPGW_PEERING_NAME": "AKStoAppGWVnetPeering",
+    "CUSTOM_DOMAIN_NAME": "circleciautomatedtesting",
+    "SSL_EMAIL_ADDRESS": "jamesser@microsoft.com"
 }
 ```
 
 Local variables can also be found in the the directory in which the
 current script resides.
 
-```
+```bash
 cat env.local.json
 ```
 
 Results:
 
-```
+```json
 {
     "TEST": "A local hello from the current working directory (where the simdem command was executed)"
 }
@@ -67,7 +78,7 @@ Results:
 For the `TEST` variable we should have the `env.local.json` value from
 the directory in which the application was executed.
 
-```
+```bash
 echo $TEST
 ```
 
@@ -80,13 +91,14 @@ A local hello from the current working directory (where the simdem command was e
 There should be variable definitions in the parent of the
 current script directory:
 
-```
+```bash
 cat ../env.json
 ```
 
 Results:
 
-```
+<!-- expected_similarity = 0.3 -->
+```expected_similarity = 0.3
 {
   "PARENT_TEST": "Hello from the parent"
 }
@@ -95,7 +107,7 @@ Results:
 Since the value of `PARENT_TEST` is only defined in this file we
 should have the value from there:
 
-```
+```bash
 echo $PARENT_TEST
 ```
 
@@ -116,7 +128,7 @@ you define it as an empty string in `env.json` if a value has been
 provided in `env.test.json`.
 
 
-```
+```bash
 echo $TEST_VALUE
 ```
 
@@ -133,7 +145,7 @@ commands will be replaced with an appropriate alternative,
 e.g. `curl`. Variables included in such commands will be expanded at
 execution time as expected.
 
-```
+```bash
 url=http://bing.com
 xdg-open $url
 ```
@@ -158,7 +170,7 @@ the SimDem environment. This includes setting to an empty string, this
 will prevent SimDem interactively requesting a value for the variable
 (or setting a dummt value in test mode).
 
-```
+```bash
 new_var=""
 echo $new_var
 ```
@@ -170,19 +182,19 @@ Results:
 
 # Capturing the output of commands
 
-```
+```bash
 CAPTURED_OUTPUT=$(echo foo | sed 's/foo/bar/')
 ```
 
 Captured value is:
 
-```
+```bash
 echo $CAPTURED_OUTPUT
 ```
 
 Results:
 
-```
+```expected_similarity = 0.2
 bar
 ```
 
@@ -190,6 +202,6 @@ bar
 
 '~' should be expanded to a home directory (no way to test this).
 
-```
+```bash
 echo $DIR_IN_HOME
 ```
